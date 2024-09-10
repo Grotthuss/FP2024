@@ -2,13 +2,13 @@
 ```
 <command> ::= <add_command> | <list_command> | <find_command> | <remove_command>
 
-<add_command> ::= "add book" <book_details> | <book_details> <add_command>
+<add_command> ::= "add book" <book_details> <EOL> | <book_details> <add_command>
 
-<list_command> ::= "list books" | <list_command>
+<list_command> ::= "list books" <book_details> <EOL> | <book_details> <list_command>
 
-<find_command> ::= "find book" <book_details> | <book_details> <find_command>
+<find_command> ::= "find book" <book_details> <EOL> | <book_details> <find_command>
 
-<remove_command> ::= "remove book" <book_details> | <book_details> <remove_command>
+<remove_command> ::= "remove book" <book_details> <EOL> | <book_details> <remove_command>
 
 <book_details> ::= <title> "," <author> "," <year>
 
