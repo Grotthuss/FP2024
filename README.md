@@ -22,28 +22,26 @@ Project is focused on making meal and workout plans
 
 4. Intensity: Low, Medium, High
 ```
-<fitnessApp> ::= "myFitness" <Name> <workouts> <meals>
+<fitnessApp> ::= "myFitness " <Name> " " <workouts> " " <meals>
 
-<workouts> ::= "workout" <workout> | "workout" <workout> <workouts> | ""
-<workout> ::= <workoutName> <intensity> "{" <subWorkouts> "}"
+<workouts> ::= "workout" " " <workout> | "workout" " " <workout> <workouts> | " "
+<workout> ::= <workoutName> " " <intensity> " " "{ " <subWorkouts> " } "
 <workoutName> ::= "Strenght" | "Flexibility" | "Cardio" | "Conditioning" | "Calisthenics" | "Martial arts"
 <intensity> ::= "Low" | "Medium" | "High"
-<subWorkouts> ::= <workout> | <workout> <subWorkouts> | ""
+<subWorkouts> ::= <workout> | <workout> <subWorkouts> | " "
 
-<meals> ::= "meal" <meal> | "meal" <meal> <meals> | ""
-<meal> ::= <mealName> <calories> "{" <subMeals> "}"
+<meals> ::= "meal" " " <meal> | "meal" " " <meal> <meals> | " "
+<meal> ::= <mealName> " " <calories> " " "{ " <subMeals> " } "
 <mealName> ::= <string>
 <calories> ::= <integer>
-<subMeals> ::= <meal> | <meal> <subMeals> | ""
+<subMeals> ::= <meal> | <meal> <subMeals> | " "
 
 <Name> ::= <string>
 <string> ::= <letter> | <letter> <string>
 <integer> ::= <number> | <number> <integer>
-<letter> ::= "a" | "b" | ... | "z" | "A" | "B" | ... | "Z"
-
-<number> ::= "0" | "1" | ... | "9"
+<letter> ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" | "A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z"
+<number> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
 ```
 
-
-pvz: myFitness RytineTreniruote workout Strenght Medium { Cardio Medium {""} } meal pusryciai 700 {uzkandis 100 {""}}
+myFitness whatever workout Strenght High { Strenght High {   } Cardio Medium {   }   }  meal pusryciai 700 { uzkandis 100 {   }  } 
