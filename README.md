@@ -1,27 +1,53 @@
 # fp-2024
+
+# Fitness domain
+Project is focused on making meal and workout plans
+
+# Main Entities
+1. fitnessApp: represents the whole fitness routine.(Workouts,Intensity,Meals)
+
+    * Name of the plan
+    * Meal
+    * What kind of workout
+    * How long will the workout be
+2. Meal: will be a string
+    * String
+3. WorkoutName: will be a workout type
+    * Strenght: for strong body
+    * Flexibility : so that you will not get muscle pain or tightness
+    * Cardio: for a healthy heart
+    * Conditioning: so you can go longer time under pressure
+    * Calisthenics: for agile body
+    * Martial arts: for self defense
+
+4. Intensity: Low, Medium, High
+5. Process: ability to cross out things that you have done from your "MyFitnessPlan"
+    * Eat
+    * Train
+
 ```
-<command> ::= <add_command> | <list_command> | <find_command> | <remove_command>
+<fitnessApp> ::= "myFitness" <Name> <workouts> <meals>
 
-<add_command> ::= "add book" <book_details> <EOL> | <book_details> <add_command>
+<workouts> ::= "workout" <workout> | "workout" <workout> <workouts> | ""
+<workout> ::= <workoutName> <intensity> "{" <subWorkouts> "}"
+<workoutName> ::= "Strenght" | "Flexibility" | "Cardio" | "Conditioning" | "Calisthenics" | "Martial arts"
+<intensity> ::= "Low" | "Medium" | "High"
+<subWorkouts> ::= <workout> | <workout> <subWorkouts> | ""
 
-<list_command> ::= "list books" <book_details> <EOL> | <book_details> <list_command>
+<meals> ::= "meal" <meal> | "meal" <meal> <meals> | ""
+<meal> ::= <mealName> <calories> "{" <subMeals> "}"
+<mealName> ::= <string>
+<calories> ::= <integer>
+<subMeals> ::= <meal> | <meal> <subMeals> | ""
 
-<find_command> ::= "find book" <book_details> <EOL> | <book_details> <find_command>
-
-<remove_command> ::= "remove book" <book_details> <EOL> | <book_details> <remove_command>
-
-<book_details> ::= <title> "," <author> "," <year>
-
-<title> ::= <string>
-
-<author> ::= <string>
-
-<year> ::= <number> | <number> <year>
-
+<Name> ::= <string>
 <string> ::= <letter> | <letter> <string>
-
+<integer> ::= <number> | <number> <integer>
 <letter> ::= "a" | "b" | ... | "z" | "A" | "B" | ... | "Z"
 
 <number> ::= "0" | "1" | ... | "9"
 
 ```
+
+
+pvz: myFitness RytineTreniruote workout Strenght Medium { Cardio Medium {""} } meal pusryciai 700 {uzkandis 100 {""}}
