@@ -21,10 +21,6 @@ Project is focused on making meal and workout plans
     * Martial arts: for self defense
 
 4. Intensity: Low, Medium, High
-5. Process: ability to cross out things that you have done from your "MyFitnessPlan"
-    * Eat
-    * Train
-
 ```
 <fitnessApp> ::= "myFitness" <Name> <workouts> <meals>
 
