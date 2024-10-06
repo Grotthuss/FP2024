@@ -22,19 +22,23 @@ Project is focused on making meal and workout plans
 
 4. Intensity: Low, Medium, High
 ```
-<fitnessApp> ::= "myFitness " <Name> " " <workouts> " " <meals>
+<fitnessApp> ::= "myFitness " <Name> " " <workouts> " | " <meals>
 
-<workouts> ::= "workout" " " <workout> | "workout" " " <workout> <workouts> | " "
+<workouts> ::= <workout> | <workout> <workouts> | " "
 <workout> ::= <workoutName> " " <intensity> " " "{ " <subWorkouts> " } "
 <workoutName> ::= "Strenght" | "Flexibility" | "Cardio" | "Conditioning" | "Calisthenics" | "Martial arts"
 <intensity> ::= "Low" | "Medium" | "High"
 <subWorkouts> ::= <workout> | <workout> <subWorkouts> | " "
 
-<meals> ::= "meal" " " <meal> | "meal" " " <meal> <meals> | " "
+<addWorkout> ::= "addWorkout " <workout> 
+
+
+<meals> ::= <meal> | <meal> <meals> | " "
 <meal> ::= <mealName> " " <calories> " " "{ " <subMeals> " } "
-<mealName> ::= <string>
+<mealName> ::= "Main" | "Apetiser" | "Dessert" | "Snack"
 <calories> ::= <integer>
 <subMeals> ::= <meal> | <meal> <subMeals> | " "
+<addMeal> ::= "addMeal " <meal>
 
 <Name> ::= <string>
 <string> ::= <letter> | <letter> <string>
@@ -45,3 +49,5 @@ Project is focused on making meal and workout plans
 ```
 
 myFitness whatever workout Strenght High { Strenght High {   } Cardio Medium {   }   }  meal pusryciai 700 { uzkandis 100 {   }  } 
+
+myFitness q Cardio Medium { Conditioning Medium { Martial arts Medium {   }  } Calisthenics Low {   }  }  Main 495 { Dessert 4 { Dessert 5 {   }   }  } 

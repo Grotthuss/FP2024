@@ -27,7 +27,6 @@ library
   exposed-modules:
       Lessons.Lesson01
       Lib1
-      Main
   other-modules:
       Paths_fp2024
   autogen-modules:
@@ -37,7 +36,6 @@ library
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
       base >=4.7 && <5
-    , parsec >= 3.1 && < 4.0
   default-language: Haskell2010
 
 executable fp2024-one
