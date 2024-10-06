@@ -1,4 +1,4 @@
-# fp-2024
+
 
 # Fitness domain
 Project is focused on making meal and workout plans
