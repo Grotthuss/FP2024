@@ -26,7 +26,7 @@ Project is focused on making meal and workout plans
 
 <workouts> ::= <workout> | <workout> <workouts> | " "
 <workout> ::= <workoutName> " " <intensity> " " "{ " <subWorkouts> " } "
-<workoutName> ::= "Strenght" | "Flexibility" | "Cardio" | "Conditioning" | "Calisthenics" | "Martial arts"
+<workoutName> ::= "Strenght" | "Flexibility" | "Cardio" | "Conditioning" | "Calisthenics" | "Martial_arts"
 <intensity> ::= "Low" | "Medium" | "High"
 <subWorkouts> ::= <workout> | <workout> <subWorkouts> | " "
 
@@ -47,7 +47,4 @@ Project is focused on making meal and workout plans
 <number> ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
 
 ```
-
-myFitness whatever workout Strenght High { Strenght High {   } Cardio Medium {   }   }  meal pusryciai 700 { uzkandis 100 {   }  } 
-
 myFitness q Cardio Medium { Conditioning Medium { Martial arts Medium {   }  } Calisthenics Low {   }  }  Main 495 { Dessert 4 { Dessert 5 {   }   }  } 
