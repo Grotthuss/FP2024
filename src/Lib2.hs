@@ -14,10 +14,7 @@ module Lib2
     ) where
 import qualified Data.Char as C
 import qualified Data.List as L
--- | An entity which represets user input.
--- It should match the grammar from Laboratory work #1.
--- Currently it has no constructors but you can introduce
--- as many as needed.
+
 data Query = FitnessApp Name [Workout] [Meal]
            | AddWorkout [Workout]
            | AddMeal [Meal]
@@ -41,12 +38,9 @@ data MealName = Main | Appetizer | Dessert | Snack
               deriving (Eq, Show)
 
 
--- | The instances are needed basically for tests
 
--- | Parses user's input.
--- The function must have tests.
 parseQuery :: String -> Either String Query
---parseQuery _ = Left "Not implemented ble 2"
+
 parseQuery str =
     case or' parseFitnessApp parseAddWorkout parseAddMeal parseListState str of
         Right (query, _) -> Right query
@@ -55,13 +49,7 @@ parseQuery str =
 
 
 type Parser a = String -> Either String (a, String)
--- >>> parseChar 'a' "aaa"
--- Right ('a',"aa")
 
-
-
--- >>> parseLetter "fsdf"
--- Right ('f',"sdf")
 parseLetter :: Parser Char
 parseLetter [] = Left "Cannot find any letter in an empty input"
 parseLetter s@(h:t) = if C.isLetter h then Right (h, t) else Left (s ++ " does not start with a letter")
@@ -73,9 +61,7 @@ parseChar (x:xs) =
     then Right (x, xs)
     else Left "Encountered a whitespace"
 
--- Parse a string of characters until a whitespace is encountered
--- >>> parseString' "asdas saddas da da"
--- Right ("asdas","saddas da da")
+
 parseString' :: Parser String
 parseString' [] = Right ("", "")
 parseString' (c:str) =
@@ -83,11 +69,10 @@ parseString' (c:str) =
         Right (ch, st) ->
             case parseString' st of
                 Right (ch1, st1) -> Right (ch : ch1, st1)
-                Left _ -> Right ([ch], st)  -- When the rest is whitespace, end parsing
+                Left _ -> Right ([ch], st)
         Left e -> Left (e)
 
--- >>> parseNumber "123    dklj"
--- Right (123,"    dklj")
+
 parseNumber :: Parser Integer
 parseNumber [] = Left "empty input, cannot parse a number"
 parseNumber str =
@@ -99,8 +84,6 @@ parseNumber str =
             [] -> Left "not a number"
             _ -> Right (read digits, rest)
 
--- >>> parseWhiteSpace "  b                  bl"
--- Right ("","b                  bl")
 parseWhiteSpace :: Parser String
 parseWhiteSpace [] = Left "no white spaces"
 parseWhiteSpace str =
@@ -113,8 +96,7 @@ parseWhiteSpace str =
             _ -> Right ("", rest)
 
 
--- >>> parseWord " >"
--- Left "Encountered a whitespace"
+
 parseWord :: Parser String
 parseWord [] = Left "empty string"
 parseWord str = 
@@ -128,8 +110,7 @@ parseWord str =
                     Left(msg) -> Right(word',rest)
             Left(e) -> Left(e)
 
--- >>> parseNumber' "123            a"            
--- Left "not a number"
+
 parseNumber' :: Parser Integer
 parseNumber'[] = Left "empty string"
 parseNumber' str = 
@@ -144,8 +125,6 @@ parseNumber' str =
             Left(e) -> Left(e)
 
 -- <workoutName> ::= "Strenght" | "Flexibility" | "Cardio" | "Conditioning" | "Calisthenics" | "Martial_arts"
--- >>> parseWorkoutName "Strenght       " 
--- Right (Strength,"")
 parseWorkoutName :: Parser WorkoutName
 parseWorkoutName [] = Left "empty string"
 parseWorkoutName str =
@@ -155,7 +134,6 @@ parseWorkoutName str =
         case word of
             Right(word', rest) -> 
                 
-                --if(word' == "strenght" || word' == "flexibility" || word' == "cardio" || word' == "conditioning" || word' == "calisthenics" || word' == "martial_arts" ) then Right(word',rest) else Left "nera tokio workout"
                 case word' of
                     "Strenght" -> Right(Strength,rest)
                     "Flexibility" -> Right(Flexibility,rest)
@@ -175,7 +153,6 @@ parseIntensity str =
     in
         case word of
             Right(word', rest) -> 
-                --if(word' == "low" || word' =="medium" || word' == "high") then Right(word',rest) else Left "nera tokio intensity"
                 case word' of
                     "Low" -> Right(Low,rest)
                     "Medium" -> Right(Medium,rest)
@@ -193,7 +170,6 @@ parseMealName str =
         case word of
             Right(word', rest) -> 
                 case word' of
-                --if(word' == "main" || word' =="appetizer" || word' == "desser" || word' == "snack") then Right(word',rest) else Left "nera tokio meal"
                     "Main" -> Right(Main,rest)
                     "Appetizer" -> Right(Appetizer,rest)
                     "Dessert" -> Right(Dessert,rest)
@@ -201,37 +177,43 @@ parseMealName str =
                     _ -> Left "nera tokio meal"
             Left e -> Left e
 
--- <workout> ::= <workoutName> " " <intensity> " " "{ " <subWorkouts> " } "
--- >>> parseWorkout "Strenght High"
--- Right (Workout Strength High,"")
+
+
+
+
+and3 :: Parser a -> Parser b -> Parser c -> Parser (a, b, c)
+and3 p1 p2 p3 str =
+    case p1 str of
+        Right (result1, rest1) -> 
+            case p2 rest1 of
+                Right (result2, rest2) ->
+                    case p3 rest2 of
+                        Right (result3, rest3) -> Right ((result1, result2, result3), rest3)
+                        Left e -> Left e
+                Left e -> Left e
+        Left e -> Left e
+
+
+  
 parseWorkout :: Parser Workout
 parseWorkout [] = Left []
 parseWorkout str =
-    case parseWorkoutName str of
-        Right(name, rest) ->
-            case parseIntensity rest of
-                Right(workoutIntensity, rest') ->
-                    case parseWord rest' of
-                        Right(_,rest'') ->
-                            --Right(Workout name workoutIntensity,rest')
-                            case parseWorkout' rest'' of
-                                Right(workouts,rest''' ) ->
-                                    case parseWord rest''' of 
-                                        Right(_,rest'''') ->
-                                            Right(Workout name workoutIntensity workouts,rest'''')
-                                        Left e -> Left e
-                                Left e ->
-                                    case parseWord rest'' of
-                                        Right(_,rest''') ->
-                                            Right(Workout name workoutIntensity [],rest''')
-                                        Left e -> Left e         
-                        Left e -> Left e
-                Left e -> Left e    
-        Left e -> Left e    
+    case and3 parseWorkoutName parseIntensity parseWord str of
+        Right((name,workoutIntensity,_),rest'') ->      
+                  case parseWorkout' rest'' of
+                        Right(workouts,rest''' ) ->
+                               case parseWord rest''' of 
+                                    Right(_,rest'''') ->
+                                        Right(Workout name workoutIntensity workouts,rest'''')
+                                    Left e -> Left e
+                        Left e ->
+                                case parseWord rest'' of
+                                    Right(_,rest''') ->
+                                        Right(Workout name workoutIntensity [],rest''')
+                                    Left e -> Left e         
+        Left e -> Left e
 
-
--- >>> parseWorkout' "Strenght High { } "
--- Right ([Workout Strength High []],"")
+-- <workout> ::= <workoutName> " " <intensity> " " "{ " <subWorkouts> " } "
 parseWorkout' :: Parser [Workout]
 parseWorkout' [] = Left ""
 parseWorkout' str =
@@ -242,36 +224,26 @@ parseWorkout' str =
                     Right (workout : workouts, finalRest) 
                 Left _ -> Right ([workout], rest)
         Left e -> Left e
-
-
-
+  
 parseMeal :: Parser Meal
 parseMeal [] = Left []
 parseMeal str =
-    case parseMealName str of
-        Right(name, rest) ->
-            case parseNumber' rest of
-                Right(calories, rest') ->
-                    case parseWord rest' of
-                        Right(_,rest'') ->
-                            --Right(Workout name workoutIntensity,rest')
-                            case parseMeal' rest'' of
-                                Right(meals,rest''' ) ->
-                                    case parseWord rest''' of 
-                                        Right(_,rest'''') ->
-                                            Right(Meal name calories meals,rest'''')
-                                        Left e -> Left e
-                                Left e ->
-                                    case parseWord rest'' of
-                                        Right(_,rest''') ->
-                                            Right(Meal name calories [],rest''')
-                                        Left e -> Left e         
+    case and3 parseMealName parseNumber' parseWord str of
+        Right((name,calories,_),rest'') ->
+            case parseMeal' rest'' of
+                Right(meals,rest''' ) ->
+                    case parseWord rest''' of 
+                        Right(_,rest'''') ->
+                            Right(Meal name calories meals,rest'''')
                         Left e -> Left e
-                Left e -> Left e    
-        Left e -> Left e    
+                Left e ->
+                    case parseWord rest'' of
+                        Right(_,rest''') ->
+                                Right(Meal name calories [],rest''')
+                        Left e -> Left e         
+        Left e -> Left e
 
--- >>> parseMeal' "Main 300 { } Main 400 { } adsada"
--- Right ([Meal Main 300 [],Meal Main 400 []],"adsada")
+-- <meal> ::= <mealName> " " <calories> " " "{ " <subMeals> " } "
 parseMeal' :: Parser [Meal]
 parseMeal' [] = Left ""
 parseMeal' str =
@@ -283,28 +255,22 @@ parseMeal' str =
                 Left _ -> Right ([meal], rest)
         Left e -> Left e
 
-
-
--- >>> parseFitnessApp "FitnessApp whatevz Strenght High { } Main 200 { } sadsdsad"
--- Right (,"sadsdsad")
+-- <fitnessApp> ::= "myFitness " <Name> " " <workouts> " | " <meals>
 parseFitnessApp :: Parser Query
 parseFitnessApp [] = Left "nothing to parse"
 parseFitnessApp str = 
     case parseWord str of
         Right (word, rest) ->
             if word == "FitnessApp" 
-            then case parseWord rest of
-                Right(name,rest'') ->
-                    case parseWorkout' rest'' of
-                        Right(workout, rest''') ->
-                            case parseMeal' rest''' of
-                                Right(meal,rest'''') ->
-                                    Right(FitnessApp name workout meal,rest'''')
-                                Left e -> Left e
-                        Left e -> Left e    
+            then case and3 parseWord parseWorkout' parseMeal' rest of
+                Right((name,workout,meal),rest'''') ->
+                        Right(FitnessApp name workout meal,rest'''')               
                 Left e -> Left e
             else Left "no such parser"
         Left e -> Left e 
+
+
+
 
 parseAddWorkout :: Parser Query
 parseAddWorkout [] = Left "nothing to parse"
@@ -354,34 +320,12 @@ or' p1 p2 p3 p4 str =
             Right r4 -> Right r4
             Left e4 -> Left (e1 ++ "; " ++ e2 ++ "; " ++ e3 ++ "; " ++ e4)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--- | An entity which represents your program's state.
--- Currently it has no constructors but you can introduce
--- as many as needed.
 data State = State
   { appName  :: String
   , workouts :: [Workout]
   , meals    :: [Meal]
   } deriving (Show, Eq)
--- | Creates an initial program's state.
--- It is called once when the program starts.
+
 emptyState :: State
 emptyState = State
     { appName  = "MyFitnessApp"
@@ -389,20 +333,16 @@ emptyState = State
      , meals    = []
     }
 
--- | Updates a state according to a query.
--- This allows your program to share the state
--- between repl iterations.
--- Right contains an optional message to print and
--- an updated program's state.
+
 stateTransition :: State -> Query -> Either String (Maybe String, State)
 stateTransition st (AddWorkout workout) = 
-  let updatedWorkouts = workout ++ workouts st  -- Add the new workout to the list
+  let updatedWorkouts = workout ++ workouts st 
       newState = st { workouts = updatedWorkouts }
       
   in Right (Just "Workout added!",newState)
 
 stateTransition st (AddMeal meal) = 
-  let updatedMeals = meal ++ meals st  -- Add the new meal to the list
+  let updatedMeals = meal ++ meals st 
       newState = st { meals = updatedMeals }
   in Right (Just "Meal added!", newState)
 

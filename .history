@@ -1,4 +1,14 @@
 ListState 
+AddWorkout Strenght High { Cardio Low { } MartialArts Medium  { } Strenght High { Cardio Low { } } }
+ListState 
+AddMeal Dessert 100 { Snack 200 { Main 1000 { } } }
+ListState 
+AddMeal Appetizer 300 { }
+ListState 
+FitnessApp whatevs Strenght High { } Main 300 { }
+ads
+dasdsa
+ListState 
 AddWorkout MartialArts Low { }
 AddMeal Main 10000 { }
 ListState 

@@ -1,0 +1,31 @@
+>>> ads
+PARSE ERROR:Failed to parse query: Unknown command
+
+>>> FitnessApp whatevs Strenght High { } Main 300 { }
+FitnessApp state updated!
+
+>>> ListState 
+Current state:
+State {appName = "whatevs", workouts = [Workout Strength High []], meals = [Meal Main 300 []]}
+
+>>> AddMeal Appetizer 300 { }
+Meal added!
+
+>>> ListState 
+Current state:
+State {appName = "whatevs", workouts = [Workout Strength High []], meals = [Meal Appetizer 300 [],Meal Main 300 []]}
+
+>>> AddMeal Dessert 100 { Snack 200 { Main 1000 { } } }
+Meal added!
+
+>>> ListState 
+Current state:
+State {appName = "whatevs", workouts = [Workout Strength High []], meals = [Meal Dessert 100 [Meal Snack 200 [Meal Main 1000 []]],Meal Appetizer 300 [],Meal Main 300 []]}
+
+>>> AddWorkout Strenght High { Cardio Low { } MartialArts Medium  { } Strenght High { Cardio Low { } } }
+Workout added!
+
+>>> ListState 
+Current state:
+State {appName = "whatevs", workouts = [Workout Strength High [Workout Cardio Low [],Workout MartialArts Medium [],Workout Strength High [Workout Cardio Low []]],Workout Strength High []], meals = [Meal Dessert 100 [Meal Snack 200 [Meal Main 1000 []]],Meal Appetizer 300 [],Meal Main 300 []]}
+ 
