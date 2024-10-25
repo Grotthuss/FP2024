@@ -1,0 +1,25 @@
+ListState 
+AddWorkout MartialArts Low { }
+AddMeal Main 10000 { }
+ListState 
+FitnessApp whatevs Strenght Medium { } Conditioning High { } Appetizer 200 { } Main 1000 { }
+ukh
+kjhkj
+jkh
+ListState
+AddWorkout Cardio Low { }
+ListState
+AddMeal Dessert 0 { }
+ListState
+FitnessApp whatevs Strenght High { Cardio Low { } } MartialArts Medium { } Main 700 { Dessert 400 { } } Appetizer 100 { }
+asda
+FitnessApp whatevs Strenght High { Cardio Low { } } MartialArts Medium { } Main 700 { Dessert 400 { } } Appetizer 100 { }
+kjhkj
+FitnessApp whatevs Strenght High { Cardio Low { } } MartialArts Medium { } Main 700 { Dessert 400 { } } Appetizer 100 { }
+kjh
+asda
+hjghjg
+asda
+jhgh
+kml
+kjhj

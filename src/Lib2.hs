@@ -1,35 +1,28 @@
-
 {-# LANGUAGE InstanceSigs #-}
 module Lib2
     ( Query(..),
     Name,
-    Workout,
-    Intensity,
-    WorkoutName,
-    Meal,
-    MealName,
-    parseQuery,
+    Workout(..),
+    Intensity(..),
+    WorkoutName(..),
+    Meal(..),
+    MealName(..),
     State(..),
+    parseQuery,
     emptyState,
     stateTransition
     ) where
 import qualified Data.Char as C
 import qualified Data.List as L
---import qualified Data.String as Stringas
---import qualified Distribution.Compat.CharParsing as S
---import Control.Monad.Trans.Cont (reset)
-
 -- | An entity which represets user input.
 -- It should match the grammar from Laboratory work #1.
 -- Currently it has no constructors but you can introduce
 -- as many as needed.
-
-
 data Query = FitnessApp Name [Workout] [Meal]
            | AddWorkout [Workout]
            | AddMeal [Meal]
            | ListState
-
+        deriving (Eq, Show)
 type Name = String
 
 data Workout = Workout WorkoutName Intensity [Workout]
@@ -39,7 +32,7 @@ data Intensity = Low | Medium | High
                deriving (Eq, Show)
 
 data WorkoutName = Strength | Flexibility | Cardio | Conditioning | Calisthenics | MartialArts
-                 deriving (Eq, Show)
+                deriving (Eq, Show)
 
 data Meal = Meal MealName Integer [Meal]
           deriving (Eq, Show)
@@ -48,38 +41,17 @@ data MealName = Main | Appetizer | Dessert | Snack
               deriving (Eq, Show)
 
 
-
-
-
-
 -- | The instances are needed basically for tests
-instance Eq Query where
-  (==) _ _= False
-
-instance Show Query where
-  show :: Query -> String
-  show (FitnessApp name workouts meals) = 
-    "FitnessApp: " ++ name ++ "\nWorkouts: " ++ show workouts ++ "\nMeals: " ++ show meals
-  show (AddWorkout workout) = 
-    "AddWorkout: " ++ show workout
-  show (AddMeal meal) = 
-    "AddMeal: " ++ show meal
 
 -- | Parses user's input.
 -- The function must have tests.
--- >>> parseQuery "FitnessApp whatevz Strenght High { Cardio Medium { } Calisthenics Low { } } Main 200 { Dessert 100 { } }"
--- Right FitnessApp: whatevz
--- Workouts: [Workout Strength High [Workout Cardio Medium [],Workout Calisthenics Low []]]
--- Meals: [Meal Main 200 [Meal Dessert 100 []]]
-
-
-
 parseQuery :: String -> Either String Query
-parseQuery [] = Left "Nothing to parse"
+--parseQuery _ = Left "Not implemented ble 2"
 parseQuery str =
     case or' parseFitnessApp parseAddWorkout parseAddMeal parseListState str of
         Right (query, _) -> Right query
-        _ -> Left "Failed to parse query: Unknown command"
+        Left _ -> Left "Failed to parse query: Unknown command"
+
 
 
 type Parser a = String -> Either String (a, String)
@@ -382,6 +354,24 @@ or' p1 p2 p3 p4 str =
             Right r4 -> Right r4
             Left e4 -> Left (e1 ++ "; " ++ e2 ++ "; " ++ e3 ++ "; " ++ e4)
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- | An entity which represents your program's state.
 -- Currently it has no constructors but you can introduce
 -- as many as needed.
@@ -404,14 +394,12 @@ emptyState = State
 -- between repl iterations.
 -- Right contains an optional message to print and
 -- an updated program's state.
--- >>> stateTransition emptyState (AddWorkout [Workout Cardio Low [Workout Cardio Medium []]])
-
-
 stateTransition :: State -> Query -> Either String (Maybe String, State)
 stateTransition st (AddWorkout workout) = 
   let updatedWorkouts = workout ++ workouts st  -- Add the new workout to the list
       newState = st { workouts = updatedWorkouts }
-  in Right (Just "Workout added!", newState)
+      
+  in Right (Just "Workout added!",newState)
 
 stateTransition st (AddMeal meal) = 
   let updatedMeals = meal ++ meals st  -- Add the new meal to the list
@@ -423,14 +411,6 @@ stateTransition st (FitnessApp name newWorkouts newMeals) =
   in Right (Just "FitnessApp state updated!", newState)
 
 stateTransition st ListState = 
-  Right (Just $ "Current state:\n" ++ show st, st)
+  Right (Just ("Current state:\n" ++ show st), st)
 
 stateTransition _ _ = Left "Query type not supported."
-
-
--- >>> let initialState = emptyState
--- >>> let workoutQuery = AddWorkout (Workout Strength Medium [])
--- >>> let mealQuery = AddMeal (Meal Main 300 [])
--- >>> let Right (_, stateWithWorkout) = stateTransition initialState workoutQuery
--- >>> let Right (_, finalState) = stateTransition stateWithWorkout mealQuery
--- >>> print finalState
