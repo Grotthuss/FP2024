@@ -1,4 +1,26 @@
 ListState 
+RemoveMeal 
+ListState 
+RemoveWorkout 
+ListState 
+RemoveWorkout 
+FitnessApp whatevs1 Strenght High { Cardio Low {  }  } Calisthenics Medium {  } Main 100 {  } 
+RemoveWorkout
+FitnessApp whatevs1 Strenght High { Cardio Low {  }  } Calisthenics Medium {  } Main 100 {  } 
+RemoveWorkout
+ListState 
+FitnessApp whatevs1 Strenght High { Cardio Low {  }  } Calisthenics Medium {  } Main 100 {  } 
+asd
+ListState 
+AddMeal Snack 100 { Main 1000 {  }  } Dessert 500 {  }
+ListState 
+AddWorkout Cardio Medium {  } Calisthenics High {  }
+ListState 
+FitnessApp whatevz1 Strenght Low {  } Main 200 {  }
+ListState 
+FitnessApp whatevz Strenght High { Cardio Low {  } MartialArts Medium {  }  } Main 1000 { Dessert 200 {  }  } Snack 300 {  }
+asd
+ListState 
 AddWorkout Strenght High { Cardio Low { } MartialArts Medium  { } Strenght High { Cardio Low { } } }
 ListState 
 AddMeal Dessert 100 { Snack 200 { Main 1000 { } } }

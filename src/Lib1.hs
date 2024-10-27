@@ -5,4 +5,4 @@ module Lib1
 -- | This function returns a list of words
 -- to be autocompleted in your program's repl.
 completions :: [String]
-completions = ["FitnessApp","Strenght","Flexibility","Cardio","Conditioning","Calisthenics","MartialArts","Low","Medium","High","Main","Appetizer","Dessert","Snack","AddMeal","AddWorkout","ListState"]
+completions = ["RemoveWorkout","RemoveMeal","FitnessApp","Strenght","Flexibility","Cardio","Conditioning","Calisthenics","MartialArts","Low","Medium","High","Main","Appetizer","Dessert","Snack","AddMeal","AddWorkout","ListState"]

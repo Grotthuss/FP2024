@@ -15,15 +15,15 @@ tests = testGroup "Tests" [unitTests]
 unitTests :: TestTree
 unitTests = testGroup "Lib2 tests"
   [ testCase "Parsing FitnessApp query" $ 
-      Lib2.parseQuery "FitnessApp whatevz Strenght High { Cardio Medium { } Calisthenics Low { } } Main 200 { Dessert 100 { } }"
+      Lib2.parseQuery "FitnessApp whatevz Strenght High { Cardio Medium {  } Calisthenics Low {  }  } Main 200 { Dessert 100 {  }  }"
       @?= Right (FitnessApp "whatevz" [Workout Lib2.Strength Lib2.High [Workout Lib2.Cardio Lib2.Medium [],Workout Lib2.Calisthenics Lib2.Low []]] [Meal Lib2.Main 200 [Meal Lib2.Dessert 100 []]]),
 
     testCase "Parsing AddWorkout query" $
-      Lib2.parseQuery "AddWorkout Strenght High { }" 
+      Lib2.parseQuery "AddWorkout Strenght High {  }" 
       @?= Right (AddWorkout [Workout Lib2.Strength Lib2.High []]),
 
     testCase "Parsing AddMeal query" $
-      Lib2.parseQuery "AddMeal Main 500 { }"
+      Lib2.parseQuery "AddMeal Main 500 {  }"
       @?= Right (Lib2.AddMeal [Lib2.Meal Lib2.Main 500 []]),
 
     testCase "Parsing ListState query" $
@@ -53,5 +53,19 @@ unitTests = testGroup "Lib2 tests"
           Right(_,newState) -> 
             Lib2.stateTransition newState (AddMeal [Meal Lib2.Snack 100 []])
             @?= Right (Just "Meal added!",Lib2.State {Lib2.appName = "whatevs", Lib2.workouts = [Workout Lib2.Strength Lib2.High []], Lib2.meals = [Meal Lib2.Snack 100 [],Meal Lib2.Main 1000 [Meal Lib2.Dessert 300 []]]})
+          Left err -> error err,
+
+    testCase "State transition - Remove Workout" $
+    case Lib2.stateTransition Lib2.emptyState (Lib2.FitnessApp "whatevs" [Workout Lib2.Strength Lib2.High []] [Meal Lib2.Main 1000 [Meal Lib2.Dessert 300 []]]) of
+          Right(_,newState) -> 
+            Lib2.stateTransition newState (RemoveWorkout)
+            @?= Right (Just "Removed the first workout.",Lib2.State {Lib2.appName = "whatevs", Lib2.workouts = [], Lib2.meals = [Meal Lib2.Main 1000 [Meal Lib2.Dessert 300 []]]})
+          Left err -> error err,
+    testCase "State transition - Remove Meal" $
+    case Lib2.stateTransition Lib2.emptyState (Lib2.FitnessApp "whatevs" [Workout Lib2.Strength Lib2.High []] [Meal Lib2.Main 1000 [Meal Lib2.Dessert 300 []]]) of
+          Right(_,newState) -> 
+            Lib2.stateTransition newState (RemoveMeal)
+            @?= Right (Just "Removed the first meal.",Lib2.State {Lib2.appName = "whatevs", Lib2.workouts = [Workout Lib2.Strength Lib2.High []], Lib2.meals = []})
           Left err -> error err
+    
   ]
