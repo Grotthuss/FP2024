@@ -183,14 +183,14 @@ parseMealName str =
 
 
 
-and3_0 :: Parser a -> Parser b -> Parser c -> String -> Either String String
-and3_0 p1 p2 p3 str =
+and3_0 :: (a -> b -> c -> d) -> Parser a -> Parser b -> Parser c -> Parser d
+and3_0 f p1 p2 p3 str =
     case p1 str of
         Right (result1, rest1) -> 
             case p2 rest1 of
                 Right (result2, rest2) ->
                     case p3 rest2 of
-                        Right (result3, rest3) -> Right (rest3)
+                        Right (result3, rest3) -> Right (f result1 result2 result3 ,rest3)
                         Left e -> Left e
                 Left e -> Left e
         Left e -> Left e
@@ -203,9 +203,9 @@ and3_0 p1 p2 p3 str =
 parseWorkout :: Parser Workout
 parseWorkout [] = Left []
 parseWorkout str =
-    case and10 parseWorkoutName (parseChar' ' ') parseIntensity (parseChar' ' ') (parseChar' '{') (parseChar' ' ') parseWorkout'' (parseChar' ' ') (parseChar' '}') (parseChar' ' ') str of
-        Right((name,workoutIntensity,workouts),rest'') ->      
-                          Right(Workout name workoutIntensity workouts,rest'')
+    case and10 (\a _ b _ _ _ c _ _ _ -> Workout a b c) parseWorkoutName (parseChar' ' ') parseIntensity (parseChar' ' ') (parseChar' '{') (parseChar' ' ') parseWorkout'' (parseChar' ' ') (parseChar' '}') (parseChar' ' ') str of
+        Right(workout,rest'') ->      
+                          Right(workout,rest'')
         Left e -> Left e
 
 parseWorkout' :: Parser [Workout]
@@ -226,7 +226,7 @@ parseWorkout'' str =
                 Right(workouts,rest''' ) ->
                             Right(workouts,rest''')
                 Left e ->
-                    case and3_0 (parseChar' ' ') (parseChar' '}') (parseChar' ' ') str of
+                    case and3_0 (\ _ _ _ -> ()) (parseChar' ' ') (parseChar' '}') (parseChar' ' ') str of
                         Right(rest''') ->
                                 Right([],str)
                         Left e -> Left e 
@@ -236,9 +236,9 @@ parseWorkout'' str =
 parseMeal :: Parser Meal
 parseMeal [] = Left []
 parseMeal str =
-    case and10 parseMealName (parseChar' ' ') parseNumber' (parseChar' ' ') (parseChar' '{') (parseChar' ' ') parseMeal'' (parseChar' ' ') (parseChar' '}') (parseChar' ' ') str of
-        Right((meal,calories,meals),rest'') ->      
-                          Right(Meal meal calories meals,rest'')
+    case and10 (\a _ b _ _ _ c _ _ _ -> Meal a b c) parseMealName (parseChar' ' ') parseNumber' (parseChar' ' ') (parseChar' '{') (parseChar' ' ') parseMeal'' (parseChar' ' ') (parseChar' '}') (parseChar' ' ') str of
+        Right((meal),rest'') ->      
+                          Right(meal,rest'')
         Left e -> Left e
 
 
@@ -260,15 +260,15 @@ parseMeal'' str =
                 Right(meals,rest''' ) ->
                             Right(meals,rest''')
                 Left e ->
-                    case and3_0 (parseChar' ' ') (parseChar' '}') (parseChar' ' ') str of
+                    case and3_0 (\ _ _ _ -> ()) (parseChar' ' ') (parseChar' '}') (parseChar' ' ') str of
                         Right(rest''') ->
                                 Right([],str)
                         Left e -> Left e 
 
 
 
-and10 :: Parser a -> Parser b -> Parser c -> Parser d -> Parser e -> Parser f -> Parser g -> Parser h -> Parser i -> Parser j -> Parser (a, c, g)
-and10 p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 str =
+and10 :: (a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k) -> Parser a -> Parser b -> Parser c -> Parser d -> Parser e -> Parser f -> Parser g -> Parser h -> Parser i -> Parser j -> Parser k--(a, b, c, d, e, f, g, h, i, j)
+and10 f p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 str =
     case p1 str of
         Right (result1, rest1) ->
             case p2 rest1 of
@@ -289,7 +289,7 @@ and10 p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 str =
                                                                         Right (result9, rest9) ->
                                                                             case p10 rest9 of
                                                                                 Right (result10, rest10) ->
-                                                                                    Right ((result1, result3, result7), rest10)
+                                                                                    Right ((f result1 result2  result3 result4 result5 result6 result7 result8 result9 result10), rest10)
                                                                                 Left e -> Left e
                                                                         Left e -> Left e
                                                                 Left e -> Left e
@@ -303,8 +303,8 @@ and10 p1 p2 p3 p4 p5 p6 p7 p8 p9 p10 str =
 
 
 
-and5_3 :: Parser a -> Parser b -> Parser c -> Parser d -> Parser e -> Parser (b, d, e)
-and5_3 p1 p2 p3 p4 p5 str =
+and5_3 :: (a -> b -> c -> d -> e -> f) -> Parser a -> Parser b -> Parser c -> Parser d -> Parser e -> Parser f
+and5_3 f p1 p2 p3 p4 p5 str =
     case p1 str of
         Right (result1, rest1) ->
             case p2 rest1 of
@@ -314,7 +314,7 @@ and5_3 p1 p2 p3 p4 p5 str =
                             case p4 rest3 of
                                 Right (result4, rest4) ->
                                     case p5 rest4 of
-                                        Right (result5, rest5) -> Right ((result2,result4, result5), rest5)
+                                        Right (result5, rest5) -> Right (f result1 result2 result3 result4 result5, rest5)-- 2 4 5
                                         Left e -> Left e
                                 Left e -> Left e
                         Left e -> Left e
@@ -328,20 +328,20 @@ parseFitnessApp str =
     case parseWord str of
         Right (word, rest) ->
             if word == "FitnessApp" 
-            then case and5_3 (parseChar' ' ') parseWord (parseChar' ' ') parseWorkout' parseMeal' rest of
-                Right((name,workout,meal),rest'''') ->
-                        Right(FitnessApp name workout meal,rest'''')               
+            then case and5_3 (\_ a _ b c -> FitnessApp a b c)(parseChar' ' ') parseWord (parseChar' ' ') parseWorkout' parseMeal' rest of
+                Right(app,rest'''') ->
+                        Right(app,rest'''')               
                 Left e -> Left e
             else Left "no such parser"
         Left e -> Left e 
 
 
-and2 :: Parser a -> Parser b -> Parser (b)
-and2 p1 p2 str =
+and2 ::(a -> b -> c) -> Parser a -> Parser b -> Parser c
+and2 f p1 p2 str =
     case p1 str of
         Right (result1, rest1) ->
             case p2 rest1 of
-                Right (result2, rest2) -> Right ((result2), rest2)
+                Right (result2, rest2) -> Right (f result1 result2, rest2)
                 Left e -> Left e
         Left e -> Left e
 
@@ -351,7 +351,7 @@ parseAddWorkout str =
     case parseWord str of 
         Right(word,rest) ->
             if word == "AddWorkout"
-                then case and2 (parseChar' ' ')  parseWorkout' rest of
+                then case and2 (\_ a -> a) (parseChar' ' ')  parseWorkout' rest of
                     Right(workout,rest) ->
                         Right(AddWorkout workout,rest)
                     Left e -> Left e
@@ -364,7 +364,7 @@ parseAddMeal str =
     case parseWord str of 
         Right(word,rest) ->
             if word == "AddMeal"
-                then case and2 (parseChar' ' ') parseMeal' rest of
+                then case and2 (\_ a -> a) (parseChar' ' ') parseMeal' rest of
                     Right(meal,rest) ->
                         Right(AddMeal meal,rest)
                     Left e -> Left e
