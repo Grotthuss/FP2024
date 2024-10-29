@@ -34,7 +34,7 @@ Meal added!
 >>> ListState 
 Current state:
 State {appName = "whatevz1", workouts = [Workout Cardio Medium [],Workout Calisthenics High [],Workout Strength Low []], meals = [Meal Snack 100 [Meal Main 1000 []],Meal Dessert 500 [],Meal Main 200 []]}
-
+  
 >>> FitnessApp whatevs1 Strenght High { Cardio Low {  }  } Calisthenics Medium {  } Main 100 {  } 
 FitnessApp state updated!
 
@@ -58,3 +58,10 @@ Removed the first meal.
 >>> ListState 
 Current state:
 State {appName = "whatevs1", workouts = [], meals = []}
+
+>>> FitnessApp whatevz Strenght High {  } Main 300 { Dessert 100 { Appetizer 25 {  }  } Main 500 {  }  } Snack 100 {  }
+FitnessApp state updated!
+
+>>> TotalCalories 
+Total Calories:
+1025

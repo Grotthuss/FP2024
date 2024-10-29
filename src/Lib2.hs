@@ -21,6 +21,7 @@ data Query = FitnessApp Name [Workout] [Meal]
            | ListState
            | RemoveMeal
            | RemoveWorkout
+           | TotalCalories
         deriving (Eq, Show)
 type Name = String
 
@@ -44,7 +45,7 @@ data MealName = Main | Appetizer | Dessert | Snack
 parseQuery :: String -> Either String Query
 
 parseQuery str =
-    case or6 parseFitnessApp parseAddWorkout parseAddMeal parseRemoveWorkout parseRemoveMeal parseListState str of
+    case or7 parseFitnessApp parseAddWorkout parseAddMeal parseRemoveWorkout parseRemoveMeal parseListState parseCalories str of
         Right (query, _) -> Right query
         Left _ -> Left "Failed to parse query: Unknown command"
 
@@ -399,10 +400,18 @@ parseRemoveWorkout str =
                     Right(RemoveWorkout,rest)
                 else Left "no such parser"
         Left e -> Left e
+parseCalories :: Parser Query
+parseCalories [] = Left "nothing to parse"
+parseCalories str =
+    case parseWord str of
+        Right(word,rest) ->
+            if word == "TotalCalories"
+                then Right(TotalCalories,rest)
+            else Left "no such parser"
+        Left e -> Left e
 
-
-or6 :: Parser a -> Parser a -> Parser a -> Parser a -> Parser a -> Parser a -> Parser a
-or6 p1 p2 p3 p4 p5 p6 str =
+or7 :: Parser a -> Parser a -> Parser a -> Parser a -> Parser a -> Parser a -> Parser a -> Parser a
+or7 p1 p2 p3 p4 p5 p6 p7 str =
     case p1 str of
         Right r1 -> Right r1
         Left e1 -> case p2 str of
@@ -415,7 +424,9 @@ or6 p1 p2 p3 p4 p5 p6 str =
                         Right r5 -> Right r5
                         Left e5 -> case p6 str of
                             Right r6 -> Right r6
-                            Left e6 -> Left (e1 ++ "; " ++ e2 ++ "; " ++ e3 ++ "; " ++ e4 ++ "; " ++ e5 ++ "; " ++ e6)
+                            Left e6 -> case p7 str of
+                                Right r7 -> Right r7
+                                Left e7 -> Left (e1 ++ "; " ++ e2 ++ "; " ++ e3 ++ "; " ++ e4 ++ "; " ++ e5 ++ "; " ++ e6 ++ "; " ++ e7)
 
 data State = State
   { appName  :: String
@@ -429,6 +440,16 @@ emptyState = State
      , workouts = []
      , meals    = []
     }
+
+
+
+sumMealCalories :: Meal -> Integer
+sumMealCalories (Meal _ calories subMeals) = calories + sum (map sumMealCalories subMeals)
+
+
+sumAllMealCalories :: State -> Integer
+sumAllMealCalories st = sum (map sumMealCalories (meals st))
+
 
 
 stateTransition :: State -> Query -> Either String (Maybe String, State)
@@ -463,5 +484,10 @@ stateTransition st RemoveWorkout =
 
 stateTransition st ListState = 
   Right (Just ("Current state:\n" ++ show st), st)
+
+stateTransition st TotalCalories = 
+    let calories = sumAllMealCalories st
+    in
+  Right (Just ("Total Calories:\n" ++ show calories ), st)
 
 stateTransition _ _ = Left "Query type not supported."
