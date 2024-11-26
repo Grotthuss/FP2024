@@ -1,0 +1,113 @@
+>>> ListState
+Current state:
+State {appName = "MyFitnessApp", workouts = [], meals = []}
+
+>>> LoadState
+State loaded successfully.
+
+>>> ListState
+Current state:
+State {appName = "MyFitnessApp", workouts = [], meals = []}
+
+>>> begin AddWorkout Cardio Low {  } ListState AddMeal Dessert 200 { Snack 0 {  } Appetizer 100 {  }  } Snack 1 {  } end
+Workout added!
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = []}
+Meal added!
+
+>>> begin AddWorkout Cardio Low {  } ListState AddMeal Dessert 200 { Snack 0 {  } Appetizer 100 {  }  } Snack 1 {  } ListState end
+Workout added!
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low [],Workout Cardio Low []], meals = [Meal Dessert 200 [Meal Snack 0 [],Meal Appetizer 100 []],Meal Snack 1 []]}
+Meal added!
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low [],Workout Cardio Low []], meals = [Meal Dessert 200 [Meal Snack 0 [],Meal Appetizer 100 []],Meal Snack 1 [],Meal Dessert 200 [Meal Snack 0 [],Meal Appetizer 100 []],Meal Snack 1 []]}
+
+>>> SaveState
+State saved
+
+>>> TotalCalories
+Total Calories:
+602
+
+>>> begin FitnessApp whatevz Strenght High {  } Main 0 {  } end
+FitnessApp state updated!
+
+>>> ListState
+Current state:
+State {appName = "whatevz", workouts = [Workout Strength High []], meals = [Meal Main 0 []]}
+
+>>> LoadState
+State loaded successfully.
+
+>>> ListState
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low [],Workout Cardio Low []], meals = [Meal Dessert 200 [Meal Snack 0 [],Meal Appetizer 100 []],Meal Snack 1 [],Meal Dessert 200 [Meal Snack 0 [],Meal Appetizer 100 []],Meal Snack 1 []]}
+
+>>> begin RemoveWorkout ListState RemoveMeal ListState RemoveMeal ListState RemoveMeal ListState end
+Removed the first workout.
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = [Meal Dessert 200 [Meal Snack 0 [],Meal Appetizer 100 []],Meal Snack 1 [],Meal Dessert 200 [Meal Snack 0 [],Meal Appetizer 100 []],Meal Snack 1 []]}
+Removed the first meal.
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = [Meal Snack 1 [],Meal Dessert 200 [Meal Snack 0 [],Meal Appetizer 100 []],Meal Snack 1 []]}
+Removed the first meal.
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = [Meal Dessert 200 [Meal Snack 0 [],Meal Appetizer 100 []],Meal Snack 1 []]}
+Removed the first meal.
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = [Meal Snack 1 []]}
+
+>>> SaveState
+State saved
+
+>>> begin RemoveWorkout RemoveWorkout RemoveMeal RemoveMeal end
+ERROR:Transaction failed: 
+
+>>> ListState
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = [Meal Snack 1 []]}
+
+>>> begin RemoveWorkout RemoveMeal end
+Removed the first workout.
+Removed the first meal.
+
+>>> ListState
+Current state:
+State {appName = "MyFitnessApp", workouts = [], meals = []}
+
+>>> LoadState
+State loaded successfully.
+
+>>> ListState
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = [Meal Snack 1 []]}
+
+>>> :paste
+-- Entering multi-line mode. Press <Ctrl-D> to finish.
+| ListState 
+| AddWorkout Cardio Low {  } 
+| ListState 
+| begin RemoveWorkout RemoveWorkout end
+| ListState 
+| SaveState
+| AddMeal Main 200 {  } 
+| ListState 
+| LoadState
+| ListState 
+| 
+Current state:
+State {appName = "MyFitnessApp", workouts = [], meals = []}
+Workout added!
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = []}
+Transaction failed: 
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = []}
+State saved
+Meal added!
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = [Meal Main 200 []]}
+State loaded successfully.
+Current state:
+State {appName = "MyFitnessApp", workouts = [Workout Cardio Low []], meals = []}

@@ -1,71 +1,100 @@
-TotalCalories 
 ListState 
-RemoveMeal 
-RemoveMeal 
-TotalCalories 
-FitnessApp whatevz Strenght High {  } Main 300 { Dessert 100 { Appetizer 25 {  }  } Main 500 {  }  } Snack 100 {  }
-sadas
-RemoveWorkout 
+LoadState
 ListState 
 RemoveWorkout 
-RemoveWorkout 
+SaveState
+AddWorkout Cardio Low {  } 
 ListState 
-FitnessApp whatevs Strenght High { Cardio Low {  } Calisthenics Medium {  }  } Strenght Low {  } Main 1000 { Dessert 100 {  } Snack 400 { Snack 100 {  }  }  } Appetizer 1000 {  }
-asdsa
-ListState 
-RemoveMeal 
-ListState 
-RemoveWorkout 
-ListState 
-RemoveWorkout 
-FitnessApp whatevs1 Strenght High { Cardio Low {  }  } Calisthenics Medium {  } Main 100 {  } 
+:paste
+ListState
+LoadState
+ListState
 RemoveWorkout
-FitnessApp whatevs1 Strenght High { Cardio Low {  }  } Calisthenics Medium {  } Main 100 {  } 
 RemoveWorkout
-ListState 
-FitnessApp whatevs1 Strenght High { Cardio Low {  }  } Calisthenics Medium {  } Main 100 {  } 
-asd
-ListState 
-AddMeal Snack 100 { Main 1000 {  }  } Dessert 500 {  }
-ListState 
-AddWorkout Cardio Medium {  } Calisthenics High {  }
-ListState 
-FitnessApp whatevz1 Strenght Low {  } Main 200 {  }
-ListState 
-FitnessApp whatevz Strenght High { Cardio Low {  } MartialArts Medium {  }  } Main 1000 { Dessert 200 {  }  } Snack 300 {  }
-asd
-ListState 
-AddWorkout Strenght High { Cardio Low { } MartialArts Medium  { } Strenght High { Cardio Low { } } }
-ListState 
-AddMeal Dessert 100 { Snack 200 { Main 1000 { } } }
-ListState 
-AddMeal Appetizer 300 { }
-ListState 
-FitnessApp whatevs Strenght High { } Main 300 { }
-ads
-dasdsa
-ListState 
-AddWorkout MartialArts Low { }
-AddMeal Main 10000 { }
-ListState 
-FitnessApp whatevs Strenght Medium { } Conditioning High { } Appetizer 200 { } Main 1000 { }
-ukh
-kjhkj
-jkh
+SaveState
 ListState
-AddWorkout Cardio Low { }
+ListStaet
+ListState 
+:paste
+ListState 
+AddWorkout Cardio Low {  } Strength Medium {  } 
+:paste
 ListState
-AddMeal Dessert 0 { }
+AddWorkout Cardio Low {  } Strenght Medium {  } 
+:paste
 ListState
-FitnessApp whatevs Strenght High { Cardio Low { } } MartialArts Medium { } Main 700 { Dessert 400 { } } Appetizer 100 { }
-asda
-FitnessApp whatevs Strenght High { Cardio Low { } } MartialArts Medium { } Main 700 { Dessert 400 { } } Appetizer 100 { }
-kjhkj
-FitnessApp whatevs Strenght High { Cardio Low { } } MartialArts Medium { } Main 700 { Dessert 400 { } } Appetizer 100 { }
-kjh
-asda
-hjghjg
-asda
-jhgh
-kml
-kjhj
+ListState
+begin RemoveWorkout RemoveWorkout end
+AddWorkout Cardio Low {  } Strenght High {  } 
+ListState 
+:paste
+istState 
+| begin RemoveMeal end
+| AddWorkout Strenght High {  } Cardio Low {  } 
+ListState 
+:paste
+ListState 
+begin RemoveMeal end
+AddWorkout Strenght High {  } Cardio Low {  } 
+ListState 
+:paste
+ListState 
+:paste
+ListState
+:paste
+ListStated
+LoadState
+ListState
+:paste
+ListState
+LoadState
+ListState
+begin RemoveWorkout RemoveMeal end
+ListState
+begin RemoveWorkout RemoveWorkout RemoveMeal RemoveMeal end
+SaveState
+begin RemoveWorkout ListState RemoveMeal ListState RemoveMeal ListState RemoveMeal ListState end
+begin RemoveWorkout ListState RemoveMeal ListState RemoveMeal ListState RemoveMeal ListState end 
+ListState
+LoadState
+ListState
+begin FitnessApp whatevz Strenght High {  } Main 0 {  } end
+TotalCalories
+SaveState
+begin AddWorkout Cardio Low {  } ListState AddMeal Dessert 200 { Snack 0 {  } Appetizer 100 {  }  } Snack 1 {  } ListState end
+begin AddWorkout Cardio Low {  } ListState AddMeal Dessert 200 { Snack 0 {  } Appetizer 100 {  }  } Snack 1 {  } end
+begin AddWorkout Cardio Low {  } ListState AddMeal Dessert 200 { Snack 0 {  } Appetizer 100 {  }  } Snack 1 {  } SaveState end
+begin AddWorkout Cardio Low {  } AddMeal Main 200 {  } ListState AddMeal Dessert 200 { Snack 0 {  } Appetizer 100 {  }  } Snack 1 {  } SaveState end
+ListState
+LoadState
+ListState
+ListState
+LoadState
+ListState
+FitnessApp whatevz Cardio Low {  } Main 200 {  } 
+ListState
+AddWorkout Cardio Low {  } 
+SaveState
+ListState
+RemoveWorkout
+RemoveState
+ListState
+LoadState
+ListState
+ListState
+SaveState
+ListState
+begin AddWorkout Cardio Low {  } end
+ListState
+begin AddMeal Main 200 { Dessert 100 {  } Snack 20 {  }  } ListState end
+ListState
+begin RemoveWorkout RemoveWorkout AddMeal Main 200 {  } end
+ListState
+begin RemoveWorkout RemoveWorkout end
+ListState
+AddWorkout Cardio Low {  }
+ListState
+ListState
+begin RemoveWorkout RemoveWorkout AddMeal Main 200 {  } end
+ListState
+begin RemoveWorkout RemoveWorkout end

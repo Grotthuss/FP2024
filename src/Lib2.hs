@@ -8,12 +8,16 @@ module Lib2
     Meal(..),
     MealName(..),
     State(..),
+    and3_0,
+    parseWord,
+    parseChar',
     parseQuery,
     emptyState,
     stateTransition
     ) where
 import qualified Data.Char as C
 import qualified Data.List as L
+
 
 data Query = FitnessApp Name [Workout] [Meal]
            | AddWorkout [Workout]
@@ -41,12 +45,12 @@ data MealName = Main | Appetizer | Dessert | Snack
               deriving (Eq, Show)
 
 
-
-parseQuery :: String -> Either String Query
-
+-- >>> parseQuery "RemoveWorkout & ListState"
+-- Right (RemoveWorkout,"& ListState")
+parseQuery :: String -> Either String (Query,String)
 parseQuery str =
     case or7 parseFitnessApp parseAddWorkout parseAddMeal parseRemoveWorkout parseRemoveMeal parseListState parseCalories str of
-        Right (query, _) -> Right query
+        Right (query,rest) -> Right (query,rest)
         Left _ -> Left "Failed to parse query: Unknown command"
 
 
@@ -105,6 +109,8 @@ parseWhiteSpace str =
             _ -> Right ("", rest)
 
 
+-- >>> parseWord "blyat\n a"
+-- Right ("blyat","\n a")
 
 parseWord :: Parser String
 parseWord [] = Left "empty string"
@@ -140,7 +146,7 @@ parseWorkoutName str =
             Right(word', rest) -> 
                 
                 case word' of
-                    "Strenght" -> Right(Strength,rest)
+                    "Strength" -> Right(Strength,rest)
                     "Flexibility" -> Right(Flexibility,rest)
                     "Cardio" -> Right(Cardio,rest)
                     "Conditioning" -> Right(Conditioning,rest)
@@ -321,6 +327,8 @@ and5_3 f p1 p2 p3 p4 p5 str =
                         Left e -> Left e
                 Left e -> Left e
         Left e -> Left e
+-- >>> parseFitnessApp "FitnessApp whatevz Strenght High {  } Main 200 {  } AddWorkout Cardio Low {  }"
+-- Right (FitnessApp "whatevz" [Workout Strength High []] [Meal Main 200 []],"AddWorkout Cardio Low {  }")
 
 -- <fitnessApp> ::= "FitnessApp " <Name> " " <workouts> " " <meals>
 parseFitnessApp :: Parser Query
@@ -371,15 +379,25 @@ parseAddMeal str =
                     Left e -> Left e
                 else Left "no such parser"
         Left e -> Left e
+-- >>> parseListState "ListState & AddWorkout Strenght High {  }"
+-- Right (ListState,"& AddWorkout Strenght High {  }")
 parseListState :: Parser Query
 parseListState [] = Left "nothing to parse"
 parseListState str =
     case parseWord str of
         Right(word,rest) ->
             if word == "ListState"
-                then Right(ListState,rest)
+                then 
+                    if rest == ""
+                        then Right(ListState,rest)
+                    else 
+                        case parseChar' ' ' rest of
+                            Right(_,rest') -> Right(ListState,rest')
+                            Left e -> Left e 
             else Left "no such parser"
         Left e -> Left e
+-- >>> parseRemoveMeal "RemoveMeal asd asd" 
+-- Right (RemoveMeal,"asd asd")
 parseRemoveMeal :: Parser Query
 parseRemoveMeal [] = Left "nothing to parse"
 parseRemoveMeal str = 
@@ -387,7 +405,12 @@ parseRemoveMeal str =
         Right(word,rest) ->
             if word == "RemoveMeal"
                 then 
-                    Right(RemoveMeal,rest)
+                    if rest == ""
+                        then Right(RemoveMeal,rest)
+                    else 
+                        case parseChar' ' ' rest of
+                            Right(_,rest') -> Right(RemoveMeal,rest')
+                            Left e -> Left e
                 else Left "no such parser"
         Left e -> Left e
 parseRemoveWorkout :: Parser Query
@@ -397,7 +420,12 @@ parseRemoveWorkout str =
         Right(word,rest) ->
             if word == "RemoveWorkout"
                 then 
-                    Right(RemoveWorkout,rest)
+                    if rest == ""
+                        then Right(RemoveWorkout,rest)
+                    else 
+                        case parseChar' ' ' rest of
+                            Right(_,rest') -> Right(RemoveWorkout,rest')
+                            Left e -> Left e
                 else Left "no such parser"
         Left e -> Left e
 parseCalories :: Parser Query
@@ -406,7 +434,12 @@ parseCalories str =
     case parseWord str of
         Right(word,rest) ->
             if word == "TotalCalories"
-                then Right(TotalCalories,rest)
+                then if rest == ""
+                        then Right(TotalCalories,rest)
+                    else 
+                        case parseChar' ' ' rest of
+                            Right(_,rest') -> Right(TotalCalories,rest')
+                            Left e -> Left e
             else Left "no such parser"
         Left e -> Left e
 
@@ -440,7 +473,7 @@ emptyState = State
      , workouts = []
      , meals    = []
     }
-
+-- 
 
 
 sumMealCalories :: Meal -> Integer

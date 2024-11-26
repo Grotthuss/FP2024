@@ -36,9 +36,12 @@ ghc-options:
 library:
   source-dirs: src
   dependencies:
+  - free
   - random
   - stm
   - async
+  - QuickCheck
+  - transformers
 
 executables:
   fp2024-one:
@@ -73,6 +76,7 @@ executables:
     - fp2024
     - repline
     - mtl
+    - stm
 
 tests:
   fp2024-test:
@@ -86,6 +90,7 @@ tests:
     - fp2024
     - tasty
     - tasty-hunit
+    - tasty-quickcheck
   fp2024-doctest:
     main:                Doctest.hs
     source-dirs:         doctest
