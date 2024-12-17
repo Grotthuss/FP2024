@@ -129,9 +129,7 @@ parseChar =
 
 
 
--- parseString'
--- >>> parse (parseString') "blyat "
--- (Right "blyat"," ")
+
 parseString' :: Parser' String
 parseString' =
     do
@@ -175,8 +173,7 @@ parseChar' c =
 
 
 
--- >>> parse (parseNumber') "123 ble"
--- (Right "123"," ble")
+
 parseNumber :: Parser' String
 parseNumber =
     do
@@ -198,8 +195,7 @@ parseNumber =
                             else throwE "not a digit"
                         Left err -> throwE err
 
--- >>> parse (parseNumber') "123 ble"
--- (Right 123," ble")
+
 parseNumber' :: Parser' Integer
 parseNumber' =
     do
@@ -425,15 +421,7 @@ parseMeal'' =
 
 
 
--- >>> parse (parseFitnessApp) "FitnessApp whatevz Cardio Low {  } Main 200 {  }"
--- (Left "Encountered a whitespace"," 200 {  }")
 
--- >>> parse (parseMeal') "Main 100 {  }  h"
--- (Right [Meal Main 100 []]," h")
-
-
--- >>> parse (parseWorkout') "Cardio Low {  } k"
--- (Right [Workout Cardio Low []],"")
 parseFitnessApp :: Parser' Query
 parseFitnessApp =
     do
