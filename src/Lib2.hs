@@ -214,7 +214,8 @@ parseWorkout str =
         Right(workout,rest'') ->      
                           Right(workout,rest'')
         Left e -> Left e
-
+-- >>> parseWorkout' "Cardio Low { Calisthenics High {  } Cardio Medium {  }  } Cardio High {  }"
+-- Right ([Workout Cardio Low [Workout Calisthenics High [],Workout Cardio Medium []],Workout Cardio High []],"")
 parseWorkout' :: Parser [Workout]
 parseWorkout' [] = Left ""
 parseWorkout' str =
@@ -248,7 +249,8 @@ parseMeal str =
                           Right(meal,rest'')
         Left e -> Left e
 
-
+-- >>> parseWorkout' "Cardio Low {  } "
+-- Right ([Workout Cardio Low []],"")
 parseMeal' :: Parser [Meal]
 parseMeal' [] = Left ""
 parseMeal' str =
